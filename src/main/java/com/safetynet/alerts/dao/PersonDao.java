@@ -9,6 +9,8 @@ public interface PersonDao {
 
     List<Person> getPersonsByName(String firstName, String lastName);
 
+    List<Person> getPersonsByAddress(String address);
+
     List<String> getEmailsByCity(String city);
 
     List<Person> getAllPersons();

@@ -1,6 +1,7 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.PersonInfoDto;
+import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,11 @@ public class AlertsController {
     @Autowired
     public AlertsController(PersonService personService) {
         this.personService = personService;
+    }
+
+    @GetMapping("/flood/stations")
+    public ResponseEntity<List<StationsDto>> getPersonInfoByStations(@RequestParam("stations") List<Integer> nbStationList) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByStations(nbStationList));
     }
 
     @GetMapping("/personInfo")

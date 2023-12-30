@@ -16,7 +16,7 @@ public class MedicalRecordDaoImpl implements MedicalRecordDao {
         this.medicalRecordList = data.getMedicalrecords();
     }
 
-    public List<MedicalRecord> getMedicalRecords(String firstName, String lastName) {
-        return this.medicalRecordList.stream().filter(medicalRecord -> medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)).toList();
+    public MedicalRecord getMedicalRecord(String firstName, String lastName) {
+        return this.medicalRecordList.stream().filter(medicalRecord -> medicalRecord.getFirstName().equals(firstName) && medicalRecord.getLastName().equals(lastName)).findFirst().orElse(null);
     }
 }
