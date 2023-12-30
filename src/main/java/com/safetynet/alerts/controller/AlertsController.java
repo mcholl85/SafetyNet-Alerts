@@ -21,7 +21,12 @@ public class AlertsController {
     }
 
     @GetMapping("/personInfo")
-    public ResponseEntity<List<PersonInfoDto>> getPersonInfo(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfo(firstName, lastName));
+    public ResponseEntity<List<PersonInfoDto>> getPersonInfoByName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByName(firstName, lastName));
+    }
+
+    @GetMapping("/communityEmail")
+    public ResponseEntity<List<String>> getEmailBy(@RequestParam("city") String city) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getEmailByCity(city));
     }
 }

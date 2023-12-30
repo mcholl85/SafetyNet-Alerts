@@ -25,10 +25,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonInfoDto> getPersonInfo(String firstName, String lastName) {
+    public List<PersonInfoDto> getPersonInfoByName(String firstName, String lastName) {
         List<PersonInfoDto> personInfoDtoList = new ArrayList<>();
 
-        List<Person> personList = personDao.getPersons(firstName, lastName);
+        List<Person> personList = personDao.getPersonsByName(firstName, lastName);
         List<MedicalRecord> medicalRecordList = medicalRecordDao.getMedicalRecords(firstName, lastName);
 
         for (int i = 0; i < personList.size(); i++) {
@@ -47,5 +47,9 @@ public class PersonServiceImpl implements PersonService {
         }
 
         return personInfoDtoList;
+    }
+
+    public List<String> getEmailByCity(String city) {
+        return personDao.getEmailsByCity(city);
     }
 }

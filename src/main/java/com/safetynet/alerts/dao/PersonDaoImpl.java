@@ -23,8 +23,13 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public List<Person> getPersons(String firstName, String lastName) {
+    public List<Person> getPersonsByName(String firstName, String lastName) {
         return this.personList.stream().filter(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)).toList();
+    }
+
+    @Override
+    public List<String> getEmailsByCity(String city) {
+        return this.personList.stream().filter(person -> person.getCity().equals(city)).map(Person::getEmail).toList();
     }
 
     @Override

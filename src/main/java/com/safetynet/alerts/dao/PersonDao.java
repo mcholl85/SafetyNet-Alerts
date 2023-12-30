@@ -7,7 +7,9 @@ import java.util.List;
 public interface PersonDao {
     void addPerson(Person person);
 
-    List<Person> getPersons(String firstName, String lastName);
+    List<Person> getPersonsByName(String firstName, String lastName);
+
+    List<String> getEmailsByCity(String city);
 
     List<Person> getAllPersons();
 
