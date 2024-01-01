@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FireStationDao {
     List<FireStation> getFireStationByStation(List<Integer> nbStationList);
+
+    Integer getFireStationByAddress(String address);
 }

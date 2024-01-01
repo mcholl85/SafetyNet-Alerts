@@ -3,6 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
+import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.PersonInfoStationDto;
 import com.safetynet.alerts.dto.StationsDto;
@@ -28,6 +29,35 @@ public class PersonServiceImpl implements PersonService {
         this.personDao = personDao;
         this.medicalRecordDao = medicalRecordDao;
         this.fireStationDao = fireStationDao;
+    }
+
+    @Override
+    public FirePersonDto getPersonsByFireStation(String address) {
+        FirePersonDto firePersonDto = new FirePersonDto();
+        List<PersonInfoStationDto> personInfoStationDtoList = new ArrayList<>();
+
+        Integer station = fireStationDao.getFireStationByAddress(address);
+
+        if (station == 0) return firePersonDto;
+
+        personDao.getPersonsByAddress(address).forEach(person -> {
+            PersonInfoStationDto personInfoStationDto = new PersonInfoStationDto();
+            MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+
+            personInfoStationDto.setFirstName(person.getFirstName());
+            personInfoStationDto.setLastName(person.getLastName());
+            personInfoStationDto.setPhone(person.getPhone());
+            personInfoStationDto.setAge(age);
+            personInfoStationDto.setMedications(medicalRecord.getMedications());
+            personInfoStationDto.setAllergies(medicalRecord.getAllergies());
+
+            personInfoStationDtoList.add(personInfoStationDto);
+        });
+        firePersonDto.setStation(station);
+        firePersonDto.setPersons(personInfoStationDtoList);
+
+        return firePersonDto;
     }
 
     @Override
@@ -85,7 +115,7 @@ public class PersonServiceImpl implements PersonService {
 
                 personInfoStationDtoList.add(personInfoStationDto);
             });
-            
+
             stationsDto.setPersonInfoStationDtoList(personInfoStationDtoList);
             stationsDtoList.add(stationsDto);
         });

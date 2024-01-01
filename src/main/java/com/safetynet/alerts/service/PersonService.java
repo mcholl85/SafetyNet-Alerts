@@ -1,5 +1,6 @@
 package com.safetynet.alerts.service;
 
+import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.StationsDto;
 
@@ -11,4 +12,6 @@ public interface PersonService {
     List<String> getEmailByCity(String city);
 
     List<StationsDto> getPersonInfoByStations(List<Integer> nbStationList);
+
+    FirePersonDto getPersonsByFireStation(String address);
 }

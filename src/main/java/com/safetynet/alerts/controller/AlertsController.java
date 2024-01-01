@@ -1,5 +1,6 @@
 package com.safetynet.alerts.controller;
 
+import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
@@ -21,7 +22,13 @@ public class AlertsController {
         this.personService = personService;
     }
 
+    @GetMapping("/fire")
+    public ResponseEntity<FirePersonDto> getPersonsByFireStation(@RequestParam("address") String address) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsByFireStation(address));
+    }
+
     @GetMapping("/flood/stations")
+
     public ResponseEntity<List<StationsDto>> getPersonInfoByStations(@RequestParam("stations") List<Integer> nbStationList) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByStations(nbStationList));
     }

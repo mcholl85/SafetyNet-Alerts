@@ -20,4 +20,13 @@ public class FireStationDaoImpl implements FireStationDao {
     public List<FireStation> getFireStationByStation(List<Integer> nbStationList) {
         return this.fireStationList.stream().filter(fireStation -> nbStationList.contains(fireStation.getStation())).toList();
     }
+
+    @Override
+    public Integer getFireStationByAddress(String address) {
+        FireStation fireStation = this.fireStationList.stream().filter(f -> f.getAddress().equals(address)).findFirst().orElse(null);
+        if (fireStation != null) {
+            return fireStation.getStation();
+        }
+        return 0;
+    }
 }

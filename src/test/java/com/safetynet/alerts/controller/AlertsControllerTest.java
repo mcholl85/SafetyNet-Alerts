@@ -1,5 +1,6 @@
 package com.safetynet.alerts.controller;
 
+import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
@@ -25,6 +26,15 @@ class AlertsControllerTest {
 
     @MockBean
     PersonService personService;
+
+    @Test
+    void testGetPersonsByFireStation() throws Exception {
+        String address = "951 LoneTree Rd";
+
+        when(personService.getPersonsByFireStation(address)).thenReturn(new FirePersonDto());
+        mockMvc.perform(get("/fire").param("address", address).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        verify(personService).getPersonsByFireStation(address);
+    }
 
     @Test
     void testGetPersonInfoByStations() throws Exception {
