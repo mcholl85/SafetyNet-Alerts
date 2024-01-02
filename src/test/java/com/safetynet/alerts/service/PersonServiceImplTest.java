@@ -3,6 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
+import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.model.FireStation;
@@ -34,6 +35,44 @@ class PersonServiceImplTest {
 
     @InjectMocks
     PersonServiceImpl personService;
+
+    @Test
+    void testGetPersonsByFireStation() {
+        String address = "748 Townings Dr";
+        Integer station = 3;
+        List<Person> personList = List.of(new Person("Foster",
+                "Shepard",
+                address,
+                "Culver",
+                "97451",
+                "841-874-6544",
+                "jaboyd@email.com"));
+        MedicalRecord medicalRecord = new MedicalRecord("Foster", "Shepard", LocalDate.of(1980, 8, 1), Collections.emptyList(), Collections.emptyList());
+
+        when(fireStationDao.getFireStationByAddress(address)).thenReturn(station);
+        when(personDao.getPersonsByAddress(address)).thenReturn(personList);
+        when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(medicalRecord);
+
+        FirePersonDto firePersonDto = personService.getPersonsByFireStation(address);
+
+        assertEquals(3, firePersonDto.getStation());
+        assertEquals(1, firePersonDto.getPersons().size());
+        assertEquals(44, firePersonDto.getPersons().get(0).getAge());
+    }
+
+    @Test
+    void testGetPersonsByFireStationWithNoReturnStation() {
+        String address = "748 Townings Dr";
+        Integer station = 0;
+
+        when(fireStationDao.getFireStationByAddress(address)).thenReturn(station);
+
+        FirePersonDto firePersonDto = personService.getPersonsByFireStation(address);
+
+        assertEquals(0, firePersonDto.getStation());
+        assertTrue(firePersonDto.getPersons().isEmpty());
+    }
+
 
     @Test
     void testGetPersonInfoByName() {

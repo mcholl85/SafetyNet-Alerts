@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,7 +37,11 @@ public class PersonServiceImpl implements PersonService {
         FirePersonDto firePersonDto = new FirePersonDto();
         Integer station = fireStationDao.getFireStationByAddress(address);
 
-        if (station == 0) return firePersonDto;
+        if (station == 0) {
+            firePersonDto.setStation(0);
+            firePersonDto.setPersons(Collections.emptyList());
+            return firePersonDto;
+        }
 
         firePersonDto.setStation(station);
         firePersonDto.setPersons(this.getPersonsInfoStation(address));

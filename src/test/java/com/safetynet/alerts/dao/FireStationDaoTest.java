@@ -32,4 +32,14 @@ class FireStationDaoTest {
     void testGetFireStationByStation() {
         assertEquals(3, fireStationDao.getFireStationByStation(List.of(1)).size());
     }
+
+    @Test
+    void testGetFireStationByAddress() {
+        assertEquals(1, fireStationDao.getFireStationByAddress("908 73rd St"));
+    }
+
+    @Test
+    void testGetFireStationByAddressWithWrongAddress() {
+        assertEquals(0, fireStationDao.getFireStationByAddress("wrong address"));
+    }
 }
