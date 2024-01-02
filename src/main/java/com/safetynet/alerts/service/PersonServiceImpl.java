@@ -34,28 +34,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public FirePersonDto getPersonsByFireStation(String address) {
         FirePersonDto firePersonDto = new FirePersonDto();
-        List<PersonInfoStationDto> personInfoStationDtoList = new ArrayList<>();
-
         Integer station = fireStationDao.getFireStationByAddress(address);
 
         if (station == 0) return firePersonDto;
 
-        personDao.getPersonsByAddress(address).forEach(person -> {
-            PersonInfoStationDto personInfoStationDto = new PersonInfoStationDto();
-            MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
-            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
-
-            personInfoStationDto.setFirstName(person.getFirstName());
-            personInfoStationDto.setLastName(person.getLastName());
-            personInfoStationDto.setPhone(person.getPhone());
-            personInfoStationDto.setAge(age);
-            personInfoStationDto.setMedications(medicalRecord.getMedications());
-            personInfoStationDto.setAllergies(medicalRecord.getAllergies());
-
-            personInfoStationDtoList.add(personInfoStationDto);
-        });
         firePersonDto.setStation(station);
-        firePersonDto.setPersons(personInfoStationDtoList);
+        firePersonDto.setPersons(this.getPersonsInfoStation(address));
 
         return firePersonDto;
     }
@@ -96,30 +80,35 @@ public class PersonServiceImpl implements PersonService {
 
         fireStationList.forEach(station -> {
             StationsDto stationsDto = new StationsDto();
-            List<PersonInfoStationDto> personInfoStationDtoList = new ArrayList<>();
 
             String address = station.getAddress();
             stationsDto.setAddress(address);
+            stationsDto.setPersonInfoStationDtoList(this.getPersonsInfoStation(address));
 
-            personDao.getPersonsByAddress(address).forEach(person -> {
-                PersonInfoStationDto personInfoStationDto = new PersonInfoStationDto();
-                MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
-                int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
-
-                personInfoStationDto.setFirstName(person.getFirstName());
-                personInfoStationDto.setLastName(person.getLastName());
-                personInfoStationDto.setPhone(person.getPhone());
-                personInfoStationDto.setAge(age);
-                personInfoStationDto.setMedications(medicalRecord.getMedications());
-                personInfoStationDto.setAllergies(medicalRecord.getAllergies());
-
-                personInfoStationDtoList.add(personInfoStationDto);
-            });
-
-            stationsDto.setPersonInfoStationDtoList(personInfoStationDtoList);
             stationsDtoList.add(stationsDto);
         });
 
         return stationsDtoList;
+    }
+
+    private List<PersonInfoStationDto> getPersonsInfoStation(String address) {
+        List<PersonInfoStationDto> personInfoStationDtoList = new ArrayList<>();
+
+        personDao.getPersonsByAddress(address).forEach(person -> {
+            PersonInfoStationDto personInfoStationDto = new PersonInfoStationDto();
+            MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+
+            personInfoStationDto.setFirstName(person.getFirstName());
+            personInfoStationDto.setLastName(person.getLastName());
+            personInfoStationDto.setPhone(person.getPhone());
+            personInfoStationDto.setAge(age);
+            personInfoStationDto.setMedications(medicalRecord.getMedications());
+            personInfoStationDto.setAllergies(medicalRecord.getAllergies());
+
+            personInfoStationDtoList.add(personInfoStationDto);
+        });
+
+        return personInfoStationDtoList;
     }
 }

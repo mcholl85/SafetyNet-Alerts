@@ -28,7 +28,6 @@ public class AlertsController {
     }
 
     @GetMapping("/flood/stations")
-
     public ResponseEntity<List<StationsDto>> getPersonInfoByStations(@RequestParam("stations") List<Integer> nbStationList) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByStations(nbStationList));
     }
