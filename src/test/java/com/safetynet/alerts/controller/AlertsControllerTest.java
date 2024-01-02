@@ -2,6 +2,7 @@ package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
+import com.safetynet.alerts.dto.PhoneListDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,15 @@ class AlertsControllerTest {
 
     @MockBean
     PersonService personService;
+
+    @Test
+    void testGetPhoneNumbersByFireStation() throws Exception {
+        Integer stationNb = 1;
+
+        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto());
+        mockMvc.perform(get("/phoneAlert").param("firestation", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        verify(personService).getPhoneNumbersByFireStation(stationNb);
+    }
 
     @Test
     void testGetPersonsByFireStation() throws Exception {

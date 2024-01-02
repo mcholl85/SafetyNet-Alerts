@@ -5,6 +5,7 @@ import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
 import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
+import com.safetynet.alerts.dto.PhoneListDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
@@ -35,6 +36,20 @@ class PersonServiceImplTest {
 
     @InjectMocks
     PersonServiceImpl personService;
+
+    @Test
+    void testGetPhoneNumbersByFireStation() {
+        Integer stationNb = 3;
+        List<FireStation> fireStationList = List.of(new FireStation("748 Townings Dr", 3));
+        List<Person> personList = Arrays.asList(new Person("Clive", "Ferguson", "748 Townings Dr", "Culver", "97451", "841-874-6741", "clivfd@ymail.com"), new Person("Foster", "Shepard", "748 Townings Dr", "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
+
+        when(fireStationDao.getFireStationByStation(stationNb)).thenReturn(fireStationList);
+        when(personDao.getPersonsByAddress("748 Townings Dr")).thenReturn(personList);
+
+        PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation(stationNb);
+        assertEquals(2, phoneListDto.getPhoneList().size());
+        assertTrue(phoneListDto.getPhoneList().containsAll(Arrays.asList("clivfd@ymail.com", "jaboyd@email.com")));
+    }
 
     @Test
     void testGetPersonsByFireStation() {

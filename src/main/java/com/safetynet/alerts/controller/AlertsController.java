@@ -2,6 +2,7 @@ package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.FirePersonDto;
 import com.safetynet.alerts.dto.PersonInfoDto;
+import com.safetynet.alerts.dto.PhoneListDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,13 @@ public class AlertsController {
         this.personService = personService;
     }
 
+    @GetMapping("/phoneAlert")
+    public ResponseEntity<PhoneListDto> getPhoneNumberByFireStation(@RequestParam("firestation") Integer fireStationNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getPhoneNumbersByFireStation(fireStationNumber));
+    }
+
     @GetMapping("/fire")
+
     public ResponseEntity<FirePersonDto> getPersonsByFireStation(@RequestParam("address") String address) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsByFireStation(address));
     }

@@ -29,8 +29,13 @@ class FireStationDaoTest {
     }
 
     @Test
-    void testGetFireStationByStation() {
+    void testGetFireStationByStationWithStationList() {
         assertEquals(3, fireStationDao.getFireStationByStation(List.of(1)).size());
+    }
+
+    @Test
+    void testGetFireStationByStationWithStationNb() {
+        assertEquals(3, fireStationDao.getFireStationByStation(1).size());
     }
 
     @Test

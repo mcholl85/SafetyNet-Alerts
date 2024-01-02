@@ -7,5 +7,7 @@ import java.util.List;
 public interface FireStationDao {
     List<FireStation> getFireStationByStation(List<Integer> nbStationList);
 
+    List<FireStation> getFireStationByStation(Integer stationNb);
+
     Integer getFireStationByAddress(String address);
 }

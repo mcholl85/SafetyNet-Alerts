@@ -3,10 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
-import com.safetynet.alerts.dto.FirePersonDto;
-import com.safetynet.alerts.dto.PersonInfoDto;
-import com.safetynet.alerts.dto.PersonInfoStationDto;
-import com.safetynet.alerts.dto.StationsDto;
+import com.safetynet.alerts.dto.*;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -30,6 +27,19 @@ public class PersonServiceImpl implements PersonService {
         this.personDao = personDao;
         this.medicalRecordDao = medicalRecordDao;
         this.fireStationDao = fireStationDao;
+    }
+
+    @Override
+    public PhoneListDto getPhoneNumbersByFireStation(Integer fireStationNumber) {
+        List<String> phoneNumberList = new ArrayList<>();
+
+        fireStationDao.getFireStationByStation(fireStationNumber).forEach(fireStation -> {
+            List<Person> personList = personDao.getPersonsByAddress(fireStation.getAddress());
+
+            phoneNumberList.addAll(personList.stream().map(Person::getEmail).toList());
+        });
+
+        return new PhoneListDto(phoneNumberList);
     }
 
     @Override
