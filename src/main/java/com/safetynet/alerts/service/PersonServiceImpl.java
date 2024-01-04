@@ -30,6 +30,55 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public StationInfoDto getPersonsInfoByFireStation(Integer stationNumber) {
+        StationInfoDto stationInfoDto = new StationInfoDto();
+        List<PersonDto> personDtoList = new ArrayList<>();
+
+        int childrenCount = 0;
+        int adultCount = 0;
+
+        List<String> addresses = fireStationDao.getFireStationAddressesByStation(stationNumber);
+        
+        if (addresses.isEmpty()) {
+            stationInfoDto.setPersons(personDtoList);
+            stationInfoDto.setAdultCount(adultCount);
+            stationInfoDto.setChildrenCount(childrenCount);
+
+            return stationInfoDto;
+        }
+
+        for (String address : addresses) {
+            List<Person> personList = personDao.getPersonsByAddress(address);
+
+            for (Person person : personList) {
+                PersonDto personDto = new PersonDto();
+
+                personDto.setFirstName(person.getFirstName());
+                personDto.setLastName(person.getLastName());
+                personDto.setPhone(person.getPhone());
+                personDto.setAddress(person.getAddress());
+
+                personDtoList.add(personDto);
+
+                MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+                int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+
+                if (age > 18) {
+                    adultCount += 1;
+                } else {
+                    childrenCount += 1;
+                }
+            }
+        }
+
+        stationInfoDto.setPersons(personDtoList);
+        stationInfoDto.setChildrenCount(childrenCount);
+        stationInfoDto.setAdultCount(adultCount);
+
+        return stationInfoDto;
+    }
+
+    @Override
     public PhoneListDto getPhoneNumbersByFireStation(Integer fireStationNumber) {
         List<String> phoneNumberList = new ArrayList<>();
 

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,5 +47,10 @@ class FireStationDaoTest {
     @Test
     void testGetFireStationByAddressWithWrongAddress() {
         assertEquals(0, fireStationDao.getFireStationByAddress("wrong address"));
+    }
+
+    @Test
+    void testGetFireStationAddressesByStation() {
+        assertEquals(Arrays.asList("644 Gershwin Cir", "908 73rd St", "947 E. Rose Dr"), fireStationDao.getFireStationAddressesByStation(1));
     }
 }

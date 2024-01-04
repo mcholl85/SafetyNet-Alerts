@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FireStationDaoImpl implements FireStationDao {
@@ -28,10 +29,12 @@ public class FireStationDaoImpl implements FireStationDao {
 
     @Override
     public Integer getFireStationByAddress(String address) {
-        FireStation fireStation = this.fireStationList.stream().filter(f -> f.getAddress().equals(address)).findFirst().orElse(null);
-        if (fireStation != null) {
-            return fireStation.getStation();
-        }
-        return 0;
+        Optional<FireStation> fireStation = this.fireStationList.stream().filter(f -> f.getAddress().equals(address)).findFirst();
+        return fireStation.map(FireStation::getStation).orElse(0);
+    }
+
+    @Override
+    public List<String> getFireStationAddressesByStation(Integer stationNb) {
+        return this.getFireStationByStation(stationNb).stream().map(FireStation::getAddress).toList();
     }
 }

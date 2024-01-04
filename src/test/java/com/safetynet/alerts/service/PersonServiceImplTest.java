@@ -3,10 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
-import com.safetynet.alerts.dto.FirePersonDto;
-import com.safetynet.alerts.dto.PersonInfoDto;
-import com.safetynet.alerts.dto.PhoneListDto;
-import com.safetynet.alerts.dto.StationsDto;
+import com.safetynet.alerts.dto.*;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -36,6 +33,30 @@ class PersonServiceImplTest {
 
     @InjectMocks
     PersonServiceImpl personService;
+
+    @Test
+    void testGetPersonsInfoByFireStation() {
+        Integer stationNb = 1;
+        List<String> addresses = Arrays.asList("644 Gershwin Cir", "908 73rd St");
+        Person peter = new Person("Peter", "Duncan", "644 Gershwin Cir", "Culver", "97451", "841-874-6512", "jaboyd@email.com");
+        Person reginold = new Person("Reginold", "Walker", "908 73rd St", "Culver", "97451", "841-874-8547", "reg@email.com");
+
+        MedicalRecord medicalRecordPeter = new MedicalRecord("Peter", "Duncan", LocalDate.of(2000, 9, 6), Collections.emptyList(), List.of("shellfish"));
+        MedicalRecord medicalRecordReginold = new MedicalRecord("Reginold", "Walker", LocalDate.of(1979, 8, 30), List.of("thradox:700mg"), List.of("illisoxian"));
+
+        when(fireStationDao.getFireStationAddressesByStation(stationNb)).thenReturn(addresses);
+        when(personDao.getPersonsByAddress("644 Gershwin Cir")).thenReturn(List.of(peter));
+        when(personDao.getPersonsByAddress("908 73rd St")).thenReturn(List.of(reginold));
+        when(medicalRecordDao.getMedicalRecord("Peter", "Duncan")).thenReturn(medicalRecordPeter);
+        when(medicalRecordDao.getMedicalRecord("Reginold", "Walker")).thenReturn(medicalRecordReginold);
+
+        StationInfoDto stationInfoDto = personService.getPersonsInfoByFireStation(stationNb);
+
+        assertEquals(2, stationInfoDto.getAdultCount());
+        assertEquals(0, stationInfoDto.getChildrenCount());
+        assertEquals(2, stationInfoDto.getPersons().size());
+        assertEquals("841-874-6512", stationInfoDto.getPersons().get(0).getPhone());
+    }
 
     @Test
     void testGetPhoneNumbersByFireStation() {

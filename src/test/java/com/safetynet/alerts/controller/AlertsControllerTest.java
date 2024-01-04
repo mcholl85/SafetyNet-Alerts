@@ -1,9 +1,6 @@
 package com.safetynet.alerts.controller;
 
-import com.safetynet.alerts.dto.FirePersonDto;
-import com.safetynet.alerts.dto.PersonInfoDto;
-import com.safetynet.alerts.dto.PhoneListDto;
-import com.safetynet.alerts.dto.StationsDto;
+import com.safetynet.alerts.dto.*;
 import com.safetynet.alerts.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,15 @@ class AlertsControllerTest {
 
     @MockBean
     PersonService personService;
+
+    @Test
+    void testGetPersonsInfoByFireStation() throws Exception {
+        Integer stationNb = 1;
+
+        when(personService.getPersonsInfoByFireStation(stationNb)).thenReturn(new StationInfoDto());
+        mockMvc.perform(get("/firestation").param("stationNumber", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        verify(personService).getPersonsInfoByFireStation(stationNb);
+    }
 
     @Test
     void testGetPhoneNumbersByFireStation() throws Exception {

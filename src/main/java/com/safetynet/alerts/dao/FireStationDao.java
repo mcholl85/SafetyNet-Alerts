@@ -10,4 +10,6 @@ public interface FireStationDao {
     List<FireStation> getFireStationByStation(Integer stationNb);
 
     Integer getFireStationByAddress(String address);
+
+    List<String> getFireStationAddressesByStation(Integer stationNb);
 }

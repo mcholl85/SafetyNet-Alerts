@@ -1,9 +1,6 @@
 package com.safetynet.alerts.controller;
 
-import com.safetynet.alerts.dto.FirePersonDto;
-import com.safetynet.alerts.dto.PersonInfoDto;
-import com.safetynet.alerts.dto.PhoneListDto;
-import com.safetynet.alerts.dto.StationsDto;
+import com.safetynet.alerts.dto.*;
 import com.safetynet.alerts.service.PersonService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,18 @@ public class AlertsController {
         this.personService = personService;
     }
 
+    @GetMapping("firestation")
+    public ResponseEntity<StationInfoDto> getPersonsInfoByFireStation(@RequestParam("stationNumber") Integer stationNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsInfoByFireStation(stationNumber));
+    }
+
+    @GetMapping("/childAlert")
+    public ResponseEntity<?> getChildrenByAddress(@RequestParam("address") String address) {
+        return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+
     @GetMapping("/phoneAlert")
+
     public ResponseEntity<PhoneListDto> getPhoneNumberByFireStation(@RequestParam("firestation") Integer fireStationNumber) {
         PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation((fireStationNumber));
 

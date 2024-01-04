@@ -1,13 +1,12 @@
 package com.safetynet.alerts.service;
 
-import com.safetynet.alerts.dto.FirePersonDto;
-import com.safetynet.alerts.dto.PersonInfoDto;
-import com.safetynet.alerts.dto.PhoneListDto;
-import com.safetynet.alerts.dto.StationsDto;
+import com.safetynet.alerts.dto.*;
 
 import java.util.List;
 
 public interface PersonService {
+    StationInfoDto getPersonsInfoByFireStation(Integer stationNumber);
+
     PhoneListDto getPhoneNumbersByFireStation(Integer fireStationNumber);
 
     List<PersonInfoDto> getPersonInfoByName(String firstName, String lastName);
