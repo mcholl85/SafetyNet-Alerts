@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -32,8 +33,17 @@ class AlertsControllerTest {
     void testGetPhoneNumbersByFireStation() throws Exception {
         Integer stationNb = 1;
 
-        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto());
+        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(List.of("000000000")));
         mockMvc.perform(get("/phoneAlert").param("firestation", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        verify(personService).getPhoneNumbersByFireStation(stationNb);
+    }
+
+    @Test
+    void testGetPhoneNumbersByFireStationWithEmptyList() throws Exception {
+        Integer stationNb = 1;
+
+        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(Collections.emptyList()));
+        mockMvc.perform(get("/phoneAlert").param("firestation", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
         verify(personService).getPhoneNumbersByFireStation(stationNb);
     }
 

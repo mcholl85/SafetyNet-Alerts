@@ -5,6 +5,7 @@ import com.safetynet.alerts.dto.PersonInfoDto;
 import com.safetynet.alerts.dto.PhoneListDto;
 import com.safetynet.alerts.dto.StationsDto;
 import com.safetynet.alerts.service.PersonService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 public class AlertsController {
     private final PersonService personService;
@@ -25,7 +27,13 @@ public class AlertsController {
 
     @GetMapping("/phoneAlert")
     public ResponseEntity<PhoneListDto> getPhoneNumberByFireStation(@RequestParam("firestation") Integer fireStationNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPhoneNumbersByFireStation(fireStationNumber));
+        PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation((fireStationNumber));
+
+        if (phoneListDto.getPhoneList().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(phoneListDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(phoneListDto);
     }
 
     @GetMapping("/fire")
