@@ -38,7 +38,7 @@ public class PersonServiceImpl implements PersonService {
         int adultCount = 0;
 
         List<String> addresses = fireStationDao.getFireStationAddressesByStation(stationNumber);
-        
+
         if (addresses.isEmpty()) {
             stationInfoDto.setPersons(personDtoList);
             stationInfoDto.setAdultCount(adultCount);
@@ -76,6 +76,39 @@ public class PersonServiceImpl implements PersonService {
         stationInfoDto.setAdultCount(adultCount);
 
         return stationInfoDto;
+    }
+
+    @Override
+    public ChildrenByAddressDto getChildrenByAddress(String address) {
+        ChildrenByAddressDto childrenByAddressDto = new ChildrenByAddressDto();
+        List<ChildrenDto> childrenDtoList = new ArrayList<>();
+        List<PersonDto> personDtoList = new ArrayList<>();
+
+        this.personDao.getPersonsByAddress(address).forEach(person -> {
+            MedicalRecord medicalRecord = this.medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+
+            if (age > 18) {
+                PersonDto personDto = new PersonDto();
+                personDto.setFirstName(person.getFirstName());
+                personDto.setLastName(person.getLastName());
+                personDto.setPhone(person.getPhone());
+
+                personDtoList.add(personDto);
+            } else {
+                ChildrenDto childrenDto = new ChildrenDto();
+                childrenDto.setFirstName(person.getFirstName());
+                childrenDto.setLastName(person.getLastName());
+                childrenDto.setAge(age);
+
+                childrenDtoList.add(childrenDto);
+            }
+        });
+
+        childrenByAddressDto.setChildren(childrenDtoList);
+        childrenByAddressDto.setPersons(personDtoList);
+
+        return childrenByAddressDto;
     }
 
     @Override

@@ -36,6 +36,15 @@ class AlertsControllerTest {
     }
 
     @Test
+    void testGetChildrenByAddress() throws Exception {
+        String address = "947 E. Rose Dr";
+
+        when(personService.getChildrenByAddress(address)).thenReturn(new ChildrenByAddressDto());
+        mockMvc.perform(get("/childAlert").param("address", address).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        verify(personService).getChildrenByAddress(address);
+    }
+
+    @Test
     void testGetPhoneNumbersByFireStation() throws Exception {
         Integer stationNb = 1;
 

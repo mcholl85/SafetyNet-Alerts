@@ -59,6 +59,25 @@ class PersonServiceImplTest {
     }
 
     @Test
+    void testGetChildrenByAddress() {
+        String address = "947 E. Rose Dr";
+        List<Person> personList = Arrays.asList(new Person("Kendrik", "Stelzer", "947 E. Rose Dr", "Culver", "97451", "841-874-7784", "bstel@email.com"), new Person("Brian", "Stelzer", "947 E. Rose Dr", "Culver", "97451", "841-874-7784", "bstel@email.com"), new Person("Shawna", "Stelzer", "947 E. Rose Dr", "Culver", "97451", "841-874-7784", "bstel@email.com"));
+        MedicalRecord kendrik = new MedicalRecord("Kendrik", "Stelzer", LocalDate.of(2014, 3, 6), null, null);
+        MedicalRecord brian = new MedicalRecord("Brian", "Stelzer", LocalDate.of(1975, 12, 6), null, null);
+        MedicalRecord shawna = new MedicalRecord("Shawna", "Stelzer", LocalDate.of(1980, 7, 8), null, null);
+
+        when(personDao.getPersonsByAddress(address)).thenReturn(personList);
+        when(medicalRecordDao.getMedicalRecord("Kendrik", "Stelzer")).thenReturn(kendrik);
+        when(medicalRecordDao.getMedicalRecord("Brian", "Stelzer")).thenReturn(brian);
+        when(medicalRecordDao.getMedicalRecord("Shawna", "Stelzer")).thenReturn(shawna);
+
+        ChildrenByAddressDto childrenByAddressDto = personService.getChildrenByAddress(address);
+        assertEquals("Kendrik", childrenByAddressDto.getChildren().get(0).getFirstName());
+        assertEquals(1, childrenByAddressDto.getChildren().size());
+        assertEquals(2, childrenByAddressDto.getPersons().size());
+    }
+
+    @Test
     void testGetPhoneNumbersByFireStation() {
         Integer stationNb = 3;
         List<FireStation> fireStationList = List.of(new FireStation("748 Townings Dr", 3));

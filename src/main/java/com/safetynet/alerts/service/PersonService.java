@@ -7,6 +7,8 @@ import java.util.List;
 public interface PersonService {
     StationInfoDto getPersonsInfoByFireStation(Integer stationNumber);
 
+    ChildrenByAddressDto getChildrenByAddress(String address);
+
     PhoneListDto getPhoneNumbersByFireStation(Integer fireStationNumber);
 
     List<PersonInfoDto> getPersonInfoByName(String firstName, String lastName);

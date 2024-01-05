@@ -22,18 +22,17 @@ public class AlertsController {
         this.personService = personService;
     }
 
-    @GetMapping("firestation")
+    @GetMapping("/firestation")
     public ResponseEntity<StationInfoDto> getPersonsInfoByFireStation(@RequestParam("stationNumber") Integer stationNumber) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsInfoByFireStation(stationNumber));
     }
 
     @GetMapping("/childAlert")
-    public ResponseEntity<?> getChildrenByAddress(@RequestParam("address") String address) {
-        return ResponseEntity.status(HttpStatus.OK).body("");
+    public ResponseEntity<ChildrenByAddressDto> getChildrenByAddress(@RequestParam("address") String address) {
+        return ResponseEntity.status(HttpStatus.OK).body(personService.getChildrenByAddress(address));
     }
 
     @GetMapping("/phoneAlert")
-
     public ResponseEntity<PhoneListDto> getPhoneNumberByFireStation(@RequestParam("firestation") Integer fireStationNumber) {
         PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation((fireStationNumber));
 
@@ -45,7 +44,6 @@ public class AlertsController {
     }
 
     @GetMapping("/fire")
-
     public ResponseEntity<FirePersonDto> getPersonsByFireStation(@RequestParam("address") String address) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsByFireStation(address));
     }
