@@ -140,9 +140,9 @@ class PersonServiceImplTest {
         when(personDao.getPersonsByName(firstName, lastName)).thenReturn(List.of(person));
         when(medicalRecordDao.getMedicalRecord(firstName, lastName)).thenReturn(medicalRecord);
 
-        List<PersonInfoDto> personInfoDtoList = personService.getPersonInfoByName(firstName, lastName);
-        assertEquals(firstName, personInfoDtoList.get(0).getFirstName());
-        assertEquals("947 E. Rose Dr", personInfoDtoList.get(0).getAddress());
+        List<PersonDto> personDtoList = personService.getPersonInfoByName(firstName, lastName);
+        assertEquals(firstName, personDtoList.get(0).getFirstName());
+        assertEquals("947 E. Rose Dr", personDtoList.get(0).getAddress());
     }
 
     @Test
@@ -174,9 +174,9 @@ class PersonServiceImplTest {
 
         List<StationsDto> stationsDtoList = personService.getPersonInfoByStations(nbStationsList);
         assertEquals(1, stationsDtoList.size());
-        assertEquals(1, stationsDtoList.get(0).getPersonInfoStationDtoList().size());
-        assertEquals(44, stationsDtoList.get(0).getPersonInfoStationDtoList().get(0).getAge());
+        assertEquals(1, stationsDtoList.get(0).getPersons().size());
+        assertEquals(44, stationsDtoList.get(0).getPersons().get(0).getAge());
         assertEquals("748 Townings Dr", stationsDtoList.get(0).getAddress());
-        assertEquals("841-874-6544", stationsDtoList.get(0).getPersonInfoStationDtoList().get(0).getPhone());
+        assertEquals("841-874-6544", stationsDtoList.get(0).getPersons().get(0).getPhone());
     }
 }

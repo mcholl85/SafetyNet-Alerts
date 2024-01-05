@@ -11,7 +11,7 @@ public interface PersonService {
 
     PhoneListDto getPhoneNumbersByFireStation(Integer fireStationNumber);
 
-    List<PersonInfoDto> getPersonInfoByName(String firstName, String lastName);
+    List<PersonDto> getPersonInfoByName(String firstName, String lastName);
 
     List<String> getEmailByCity(String city);
 

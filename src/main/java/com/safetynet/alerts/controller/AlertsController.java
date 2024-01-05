@@ -54,7 +54,7 @@ public class AlertsController {
     }
 
     @GetMapping("/personInfo")
-    public ResponseEntity<List<PersonInfoDto>> getPersonInfoByName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
+    public ResponseEntity<List<PersonDto>> getPersonInfoByName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByName(firstName, lastName));
     }
 

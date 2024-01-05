@@ -82,7 +82,7 @@ class AlertsControllerTest {
 
     @Test
     void testGetPersonInfoByName() throws Exception {
-        List<PersonInfoDto> personInfoDtoList = List.of(new PersonInfoDto());
+        List<PersonDto> personInfoDtoList = List.of(new PersonDto());
 
         when(personService.getPersonInfoByName("Brian", "Stelzer")).thenReturn(personInfoDtoList);
         mockMvc.perform(get("/personInfo").param("firstName", "Brian").param("lastName", "Stelzer").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());

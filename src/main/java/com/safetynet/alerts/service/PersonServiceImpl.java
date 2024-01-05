@@ -81,27 +81,26 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ChildrenByAddressDto getChildrenByAddress(String address) {
         ChildrenByAddressDto childrenByAddressDto = new ChildrenByAddressDto();
-        List<ChildrenDto> childrenDtoList = new ArrayList<>();
+        List<PersonDto> childrenDtoList = new ArrayList<>();
         List<PersonDto> personDtoList = new ArrayList<>();
 
         this.personDao.getPersonsByAddress(address).forEach(person -> {
+            PersonDto personDto = new PersonDto();
             MedicalRecord medicalRecord = this.medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
             int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
             if (age > 18) {
-                PersonDto personDto = new PersonDto();
                 personDto.setFirstName(person.getFirstName());
                 personDto.setLastName(person.getLastName());
                 personDto.setPhone(person.getPhone());
 
                 personDtoList.add(personDto);
             } else {
-                ChildrenDto childrenDto = new ChildrenDto();
-                childrenDto.setFirstName(person.getFirstName());
-                childrenDto.setLastName(person.getLastName());
-                childrenDto.setAge(age);
+                personDto.setFirstName(person.getFirstName());
+                personDto.setLastName(person.getLastName());
+                personDto.setAge(age);
 
-                childrenDtoList.add(childrenDto);
+                childrenDtoList.add(personDto);
             }
         });
 
@@ -142,29 +141,29 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonInfoDto> getPersonInfoByName(String firstName, String lastName) {
-        List<PersonInfoDto> personInfoDtoList = new ArrayList<>();
+    public List<PersonDto> getPersonInfoByName(String firstName, String lastName) {
+        List<PersonDto> personDtoList = new ArrayList<>();
 
         List<Person> personList = personDao.getPersonsByName(firstName, lastName);
 
         personList.forEach(person -> {
-            PersonInfoDto infos = new PersonInfoDto();
+            PersonDto personDto = new PersonDto();
             MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
 
             int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
-            infos.setFirstName(person.getFirstName());
-            infos.setLastName(person.getLastName());
-            infos.setAge(age);
-            infos.setAddress(person.getAddress());
-            infos.setEmail(person.getEmail());
-            infos.setMedications(medicalRecord.getMedications());
-            infos.setAllergies(medicalRecord.getAllergies());
+            personDto.setFirstName(person.getFirstName());
+            personDto.setLastName(person.getLastName());
+            personDto.setAge(age);
+            personDto.setAddress(person.getAddress());
+            personDto.setEmail(person.getEmail());
+            personDto.setMedications(medicalRecord.getMedications());
+            personDto.setAllergies(medicalRecord.getAllergies());
 
-            personInfoDtoList.add(infos);
+            personDtoList.add(personDto);
         });
 
-        return personInfoDtoList;
+        return personDtoList;
     }
 
     public List<String> getEmailByCity(String city) {
@@ -180,7 +179,7 @@ public class PersonServiceImpl implements PersonService {
 
             String address = station.getAddress();
             stationsDto.setAddress(address);
-            stationsDto.setPersonInfoStationDtoList(this.getPersonsInfoStation(address));
+            stationsDto.setPersons(this.getPersonsInfoStation(address));
 
             stationsDtoList.add(stationsDto);
         });
@@ -188,24 +187,24 @@ public class PersonServiceImpl implements PersonService {
         return stationsDtoList;
     }
 
-    private List<PersonInfoStationDto> getPersonsInfoStation(String address) {
-        List<PersonInfoStationDto> personInfoStationDtoList = new ArrayList<>();
+    private List<PersonDto> getPersonsInfoStation(String address) {
+        List<PersonDto> personDtoList = new ArrayList<>();
 
         personDao.getPersonsByAddress(address).forEach(person -> {
-            PersonInfoStationDto personInfoStationDto = new PersonInfoStationDto();
+            PersonDto personDto = new PersonDto();
             MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
             int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
-            personInfoStationDto.setFirstName(person.getFirstName());
-            personInfoStationDto.setLastName(person.getLastName());
-            personInfoStationDto.setPhone(person.getPhone());
-            personInfoStationDto.setAge(age);
-            personInfoStationDto.setMedications(medicalRecord.getMedications());
-            personInfoStationDto.setAllergies(medicalRecord.getAllergies());
+            personDto.setFirstName(person.getFirstName());
+            personDto.setLastName(person.getLastName());
+            personDto.setPhone(person.getPhone());
+            personDto.setAge(age);
+            personDto.setMedications(medicalRecord.getMedications());
+            personDto.setAllergies(medicalRecord.getAllergies());
 
-            personInfoStationDtoList.add(personInfoStationDto);
+            personDtoList.add(personDto);
         });
 
-        return personInfoStationDtoList;
+        return personDtoList;
     }
 }

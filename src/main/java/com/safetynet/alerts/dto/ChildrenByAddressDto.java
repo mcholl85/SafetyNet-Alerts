@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ChildrenByAddressDto {
-    private List<ChildrenDto> children;
+    private List<PersonDto> children;
     private List<PersonDto> persons;
 }

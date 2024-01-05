@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class FirePersonDto {
     private Integer station;
-    private List<PersonInfoStationDto> persons;
+    private List<PersonDto> persons;
 }
