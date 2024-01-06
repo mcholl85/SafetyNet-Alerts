@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PersonServiceImplTest {
+class AlertsServiceImplTest {
     @Mock
     PersonDao personDao;
     @Mock
@@ -32,7 +32,7 @@ class PersonServiceImplTest {
     FireStationDao fireStationDao;
 
     @InjectMocks
-    PersonServiceImpl personService;
+    AlertsServiceImpl alertsService;
 
     @Test
     void testGetPersonsInfoByFireStation() {
@@ -50,7 +50,7 @@ class PersonServiceImplTest {
         when(medicalRecordDao.getMedicalRecord("Peter", "Duncan")).thenReturn(medicalRecordPeter);
         when(medicalRecordDao.getMedicalRecord("Reginold", "Walker")).thenReturn(medicalRecordReginold);
 
-        StationInfoDto stationInfoDto = personService.getPersonsInfoByFireStation(stationNb);
+        StationInfoDto stationInfoDto = alertsService.getPersonsInfoByFireStation(stationNb);
 
         assertEquals(2, stationInfoDto.getAdultCount());
         assertEquals(0, stationInfoDto.getChildrenCount());
@@ -71,7 +71,7 @@ class PersonServiceImplTest {
         when(medicalRecordDao.getMedicalRecord("Brian", "Stelzer")).thenReturn(brian);
         when(medicalRecordDao.getMedicalRecord("Shawna", "Stelzer")).thenReturn(shawna);
 
-        ChildrenByAddressDto childrenByAddressDto = personService.getChildrenByAddress(address);
+        ChildrenByAddressDto childrenByAddressDto = alertsService.getChildrenByAddress(address);
         assertEquals("Kendrik", childrenByAddressDto.getChildren().get(0).getFirstName());
         assertEquals(1, childrenByAddressDto.getChildren().size());
         assertEquals(2, childrenByAddressDto.getPersons().size());
@@ -86,7 +86,7 @@ class PersonServiceImplTest {
         when(fireStationDao.getFireStationByStation(stationNb)).thenReturn(fireStationList);
         when(personDao.getPersonsByAddress("748 Townings Dr")).thenReturn(personList);
 
-        PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation(stationNb);
+        PhoneListDto phoneListDto = alertsService.getPhoneNumbersByFireStation(stationNb);
         assertEquals(2, phoneListDto.getPhoneList().size());
         assertTrue(phoneListDto.getPhoneList().containsAll(Arrays.asList("clivfd@ymail.com", "jaboyd@email.com")));
     }
@@ -108,7 +108,7 @@ class PersonServiceImplTest {
         when(personDao.getPersonsByAddress(address)).thenReturn(personList);
         when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(medicalRecord);
 
-        FirePersonDto firePersonDto = personService.getPersonsByFireStation(address);
+        FirePersonDto firePersonDto = alertsService.getPersonsByFireStation(address);
 
         assertEquals(3, firePersonDto.getStation());
         assertEquals(1, firePersonDto.getPersons().size());
@@ -122,7 +122,7 @@ class PersonServiceImplTest {
 
         when(fireStationDao.getFireStationByAddress(address)).thenReturn(station);
 
-        FirePersonDto firePersonDto = personService.getPersonsByFireStation(address);
+        FirePersonDto firePersonDto = alertsService.getPersonsByFireStation(address);
 
         assertEquals(0, firePersonDto.getStation());
         assertTrue(firePersonDto.getPersons().isEmpty());
@@ -140,7 +140,7 @@ class PersonServiceImplTest {
         when(personDao.getPersonsByName(firstName, lastName)).thenReturn(List.of(person));
         when(medicalRecordDao.getMedicalRecord(firstName, lastName)).thenReturn(medicalRecord);
 
-        List<PersonDto> personDtoList = personService.getPersonInfoByName(firstName, lastName);
+        List<PersonDto> personDtoList = alertsService.getPersonInfoByName(firstName, lastName);
         assertEquals(firstName, personDtoList.get(0).getFirstName());
         assertEquals("947 E. Rose Dr", personDtoList.get(0).getAddress());
     }
@@ -152,7 +152,7 @@ class PersonServiceImplTest {
 
         when(personDao.getEmailsByCity(city)).thenReturn(emails);
 
-        assertTrue(personService.getEmailByCity(city).containsAll(emails));
+        assertTrue(alertsService.getEmailByCity(city).containsAll(emails));
     }
 
     @Test
@@ -172,7 +172,7 @@ class PersonServiceImplTest {
         when(personDao.getPersonsByAddress("748 Townings Dr")).thenReturn(personList);
         when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(medicalRecord);
 
-        List<StationsDto> stationsDtoList = personService.getPersonInfoByStations(nbStationsList);
+        List<StationsDto> stationsDtoList = alertsService.getPersonInfoByStations(nbStationsList);
         assertEquals(1, stationsDtoList.size());
         assertEquals(1, stationsDtoList.get(0).getPersons().size());
         assertEquals(44, stationsDtoList.get(0).getPersons().get(0).getAge());

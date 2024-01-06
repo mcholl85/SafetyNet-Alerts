@@ -16,14 +16,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class PersonServiceImpl implements PersonService {
+public class AlertsServiceImpl implements AlertsService {
 
     private final PersonDao personDao;
     private final MedicalRecordDao medicalRecordDao;
     private final FireStationDao fireStationDao;
 
     @Autowired
-    public PersonServiceImpl(PersonDao personDao, MedicalRecordDao medicalRecordDao, FireStationDao fireStationDao) {
+    public AlertsServiceImpl(PersonDao personDao, MedicalRecordDao medicalRecordDao, FireStationDao fireStationDao) {
         this.personDao = personDao;
         this.medicalRecordDao = medicalRecordDao;
         this.fireStationDao = fireStationDao;

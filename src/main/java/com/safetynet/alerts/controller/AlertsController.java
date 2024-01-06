@@ -1,7 +1,7 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.*;
-import com.safetynet.alerts.service.PersonService;
+import com.safetynet.alerts.service.AlertsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,26 +15,26 @@ import java.util.List;
 @Log4j2
 @RestController
 public class AlertsController {
-    private final PersonService personService;
+    private final AlertsService alertsService;
 
     @Autowired
-    public AlertsController(PersonService personService) {
-        this.personService = personService;
+    public AlertsController(AlertsService alertsService) {
+        this.alertsService = alertsService;
     }
 
     @GetMapping("/firestation")
     public ResponseEntity<StationInfoDto> getPersonsInfoByFireStation(@RequestParam("stationNumber") Integer stationNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsInfoByFireStation(stationNumber));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getPersonsInfoByFireStation(stationNumber));
     }
 
     @GetMapping("/childAlert")
     public ResponseEntity<ChildrenByAddressDto> getChildrenByAddress(@RequestParam("address") String address) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getChildrenByAddress(address));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getChildrenByAddress(address));
     }
 
     @GetMapping("/phoneAlert")
     public ResponseEntity<PhoneListDto> getPhoneNumberByFireStation(@RequestParam("firestation") Integer fireStationNumber) {
-        PhoneListDto phoneListDto = personService.getPhoneNumbersByFireStation((fireStationNumber));
+        PhoneListDto phoneListDto = alertsService.getPhoneNumbersByFireStation((fireStationNumber));
 
         if (phoneListDto.getPhoneList().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(phoneListDto);
@@ -45,21 +45,21 @@ public class AlertsController {
 
     @GetMapping("/fire")
     public ResponseEntity<FirePersonDto> getPersonsByFireStation(@RequestParam("address") String address) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonsByFireStation(address));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getPersonsByFireStation(address));
     }
 
     @GetMapping("/flood/stations")
     public ResponseEntity<List<StationsDto>> getPersonInfoByStations(@RequestParam("stations") List<Integer> nbStationList) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByStations(nbStationList));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getPersonInfoByStations(nbStationList));
     }
 
     @GetMapping("/personInfo")
     public ResponseEntity<List<PersonDto>> getPersonInfoByName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getPersonInfoByName(firstName, lastName));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getPersonInfoByName(firstName, lastName));
     }
 
     @GetMapping("/communityEmail")
     public ResponseEntity<List<String>> getEmailBy(@RequestParam("city") String city) {
-        return ResponseEntity.status(HttpStatus.OK).body(personService.getEmailByCity(city));
+        return ResponseEntity.status(HttpStatus.OK).body(alertsService.getEmailByCity(city));
     }
 }

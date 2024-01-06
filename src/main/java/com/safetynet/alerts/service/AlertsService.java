@@ -4,7 +4,7 @@ import com.safetynet.alerts.dto.*;
 
 import java.util.List;
 
-public interface PersonService {
+public interface AlertsService {
     StationInfoDto getPersonsInfoByFireStation(Integer stationNumber);
 
     ChildrenByAddressDto getChildrenByAddress(String address);

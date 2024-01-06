@@ -1,7 +1,7 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.*;
-import com.safetynet.alerts.service.PersonService;
+import com.safetynet.alerts.service.AlertsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,77 +24,77 @@ class AlertsControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    PersonService personService;
+    AlertsService alertsService;
 
     @Test
     void testGetPersonsInfoByFireStation() throws Exception {
         Integer stationNb = 1;
 
-        when(personService.getPersonsInfoByFireStation(stationNb)).thenReturn(new StationInfoDto());
+        when(alertsService.getPersonsInfoByFireStation(stationNb)).thenReturn(new StationInfoDto());
         mockMvc.perform(get("/firestation").param("stationNumber", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getPersonsInfoByFireStation(stationNb);
+        verify(alertsService).getPersonsInfoByFireStation(stationNb);
     }
 
     @Test
     void testGetChildrenByAddress() throws Exception {
         String address = "947 E. Rose Dr";
 
-        when(personService.getChildrenByAddress(address)).thenReturn(new ChildrenByAddressDto());
+        when(alertsService.getChildrenByAddress(address)).thenReturn(new ChildrenByAddressDto());
         mockMvc.perform(get("/childAlert").param("address", address).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getChildrenByAddress(address);
+        verify(alertsService).getChildrenByAddress(address);
     }
 
     @Test
     void testGetPhoneNumbersByFireStation() throws Exception {
         Integer stationNb = 1;
 
-        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(List.of("000000000")));
+        when(alertsService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(List.of("000000000")));
         mockMvc.perform(get("/phoneAlert").param("firestation", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getPhoneNumbersByFireStation(stationNb);
+        verify(alertsService).getPhoneNumbersByFireStation(stationNb);
     }
 
     @Test
     void testGetPhoneNumbersByFireStationWithEmptyList() throws Exception {
         Integer stationNb = 1;
 
-        when(personService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(Collections.emptyList()));
+        when(alertsService.getPhoneNumbersByFireStation(stationNb)).thenReturn(new PhoneListDto(Collections.emptyList()));
         mockMvc.perform(get("/phoneAlert").param("firestation", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
-        verify(personService).getPhoneNumbersByFireStation(stationNb);
+        verify(alertsService).getPhoneNumbersByFireStation(stationNb);
     }
 
     @Test
     void testGetPersonsByFireStation() throws Exception {
         String address = "951 LoneTree Rd";
 
-        when(personService.getPersonsByFireStation(address)).thenReturn(new FirePersonDto());
+        when(alertsService.getPersonsByFireStation(address)).thenReturn(new FirePersonDto());
         mockMvc.perform(get("/fire").param("address", address).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getPersonsByFireStation(address);
+        verify(alertsService).getPersonsByFireStation(address);
     }
 
     @Test
     void testGetPersonInfoByStations() throws Exception {
         List<Integer> stationNumbers = Arrays.asList(1, 2);
 
-        when(personService.getPersonInfoByStations(stationNumbers)).thenReturn(List.of(new StationsDto()));
+        when(alertsService.getPersonInfoByStations(stationNumbers)).thenReturn(List.of(new StationsDto()));
         mockMvc.perform(get("/flood/stations").param("stations", "1", "2").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getPersonInfoByStations(stationNumbers);
+        verify(alertsService).getPersonInfoByStations(stationNumbers);
     }
 
     @Test
     void testGetPersonInfoByName() throws Exception {
         List<PersonDto> personInfoDtoList = List.of(new PersonDto());
 
-        when(personService.getPersonInfoByName("Brian", "Stelzer")).thenReturn(personInfoDtoList);
+        when(alertsService.getPersonInfoByName("Brian", "Stelzer")).thenReturn(personInfoDtoList);
         mockMvc.perform(get("/personInfo").param("firstName", "Brian").param("lastName", "Stelzer").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getPersonInfoByName("Brian", "Stelzer");
+        verify(alertsService).getPersonInfoByName("Brian", "Stelzer");
     }
 
     @Test
     void testGetEmailBy() throws Exception {
         String city = "Paris";
 
-        when(personService.getEmailByCity(city)).thenReturn(Arrays.asList("jaboyd@email.com", "drk@email.com"));
+        when(alertsService.getEmailByCity(city)).thenReturn(Arrays.asList("jaboyd@email.com", "drk@email.com"));
         mockMvc.perform(get("/communityEmail").param("city", city).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-        verify(personService).getEmailByCity(city);
+        verify(alertsService).getEmailByCity(city);
     }
 }
