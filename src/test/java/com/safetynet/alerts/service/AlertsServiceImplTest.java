@@ -3,7 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
-import com.safetynet.alerts.dto.*;
+import com.safetynet.alerts.dto.alerts.*;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,8 +48,8 @@ class AlertsServiceImplTest {
         when(fireStationDao.getFireStationAddressesByStation(stationNb)).thenReturn(addresses);
         when(personDao.getPersonsByAddress("644 Gershwin Cir")).thenReturn(List.of(peter));
         when(personDao.getPersonsByAddress("908 73rd St")).thenReturn(List.of(reginold));
-        when(medicalRecordDao.getMedicalRecord("Peter", "Duncan")).thenReturn(medicalRecordPeter);
-        when(medicalRecordDao.getMedicalRecord("Reginold", "Walker")).thenReturn(medicalRecordReginold);
+        when(medicalRecordDao.getMedicalRecord("Peter", "Duncan")).thenReturn(Optional.of(medicalRecordPeter));
+        when(medicalRecordDao.getMedicalRecord("Reginold", "Walker")).thenReturn(Optional.of(medicalRecordReginold));
 
         StationInfoDto stationInfoDto = alertsService.getPersonsInfoByFireStation(stationNb);
 
@@ -67,9 +68,9 @@ class AlertsServiceImplTest {
         MedicalRecord shawna = new MedicalRecord("Shawna", "Stelzer", LocalDate.of(1980, 7, 8), null, null);
 
         when(personDao.getPersonsByAddress(address)).thenReturn(personList);
-        when(medicalRecordDao.getMedicalRecord("Kendrik", "Stelzer")).thenReturn(kendrik);
-        when(medicalRecordDao.getMedicalRecord("Brian", "Stelzer")).thenReturn(brian);
-        when(medicalRecordDao.getMedicalRecord("Shawna", "Stelzer")).thenReturn(shawna);
+        when(medicalRecordDao.getMedicalRecord("Kendrik", "Stelzer")).thenReturn(Optional.of(kendrik));
+        when(medicalRecordDao.getMedicalRecord("Brian", "Stelzer")).thenReturn(Optional.of(brian));
+        when(medicalRecordDao.getMedicalRecord("Shawna", "Stelzer")).thenReturn(Optional.of(shawna));
 
         ChildrenByAddressDto childrenByAddressDto = alertsService.getChildrenByAddress(address);
         assertEquals("Kendrik", childrenByAddressDto.getChildren().get(0).getFirstName());
@@ -94,7 +95,7 @@ class AlertsServiceImplTest {
     @Test
     void testGetPersonsByFireStation() {
         String address = "748 Townings Dr";
-        Integer station = 3;
+        Optional<FireStation> fireStationOptional = Optional.of(new FireStation("748 Townings Dr", 3));
         List<Person> personList = List.of(new Person("Foster",
                 "Shepard",
                 address,
@@ -104,9 +105,9 @@ class AlertsServiceImplTest {
                 "jaboyd@email.com"));
         MedicalRecord medicalRecord = new MedicalRecord("Foster", "Shepard", LocalDate.of(1980, 8, 1), Collections.emptyList(), Collections.emptyList());
 
-        when(fireStationDao.getFireStationByAddress(address)).thenReturn(station);
+        when(fireStationDao.getFireStationByAddress(address)).thenReturn(fireStationOptional);
         when(personDao.getPersonsByAddress(address)).thenReturn(personList);
-        when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(medicalRecord);
+        when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(Optional.of(medicalRecord));
 
         FirePersonDto firePersonDto = alertsService.getPersonsByFireStation(address);
 
@@ -118,7 +119,7 @@ class AlertsServiceImplTest {
     @Test
     void testGetPersonsByFireStationWithNoReturnStation() {
         String address = "748 Townings Dr";
-        Integer station = 0;
+        Optional<FireStation> station = Optional.empty();
 
         when(fireStationDao.getFireStationByAddress(address)).thenReturn(station);
 
@@ -138,7 +139,7 @@ class AlertsServiceImplTest {
                 "hydrapermazol:400mg"), List.of("nillacilan"));
 
         when(personDao.getPersonsByName(firstName, lastName)).thenReturn(List.of(person));
-        when(medicalRecordDao.getMedicalRecord(firstName, lastName)).thenReturn(medicalRecord);
+        when(medicalRecordDao.getMedicalRecord(firstName, lastName)).thenReturn(Optional.of(medicalRecord));
 
         List<PersonDto> personDtoList = alertsService.getPersonInfoByName(firstName, lastName);
         assertEquals(firstName, personDtoList.get(0).getFirstName());
@@ -170,7 +171,7 @@ class AlertsServiceImplTest {
 
         when(fireStationDao.getFireStationByStation(nbStationsList)).thenReturn(fireStationList);
         when(personDao.getPersonsByAddress("748 Townings Dr")).thenReturn(personList);
-        when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(medicalRecord);
+        when(medicalRecordDao.getMedicalRecord("Foster", "Shepard")).thenReturn(Optional.of(medicalRecord));
 
         List<StationsDto> stationsDtoList = alertsService.getPersonInfoByStations(nbStationsList);
         assertEquals(1, stationsDtoList.size());

@@ -1,6 +1,6 @@
 package com.safetynet.alerts.service;
 
-import com.safetynet.alerts.dto.*;
+import com.safetynet.alerts.dto.alerts.*;
 
 import java.util.List;
 

@@ -2,7 +2,8 @@ package com.safetynet.alerts.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.safetynet.alerts.dto.DataDto;
+import com.safetynet.alerts.dto.alerts.DataDto;
+import com.safetynet.alerts.model.FireStation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -11,8 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FireStationDaoTest {
@@ -41,12 +44,14 @@ class FireStationDaoTest {
 
     @Test
     void testGetFireStationByAddress() {
-        assertEquals(1, fireStationDao.getFireStationByAddress("908 73rd St"));
+        Optional<FireStation> fireStationOptional = fireStationDao.getFireStationByAddress("908 73rd St");
+        fireStationOptional.ifPresent(fireStation -> assertEquals(1, fireStation.getStation()));
     }
 
     @Test
     void testGetFireStationByAddressWithWrongAddress() {
-        assertEquals(0, fireStationDao.getFireStationByAddress("wrong address"));
+        Optional<FireStation> fireStationOptional = fireStationDao.getFireStationByAddress("wrong address");
+        assertTrue(fireStationOptional.isEmpty());
     }
 
     @Test

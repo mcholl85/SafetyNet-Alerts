@@ -3,9 +3,12 @@ package com.safetynet.alerts.dao;
 import com.safetynet.alerts.model.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonDao {
-    void addPerson(Person person);
+    boolean addPerson(Person person);
+
+    Optional<Person> getPersonByName(String firstName, String lastName);
 
     List<Person> getPersonsByName(String firstName, String lastName);
 
@@ -17,5 +20,5 @@ public interface PersonDao {
 
     void updatePerson(Person person);
 
-    void deletePerson(Person person);
+    boolean deletePerson(Person person);
 }

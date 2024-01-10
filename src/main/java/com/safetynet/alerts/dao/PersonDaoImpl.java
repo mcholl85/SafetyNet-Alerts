@@ -1,12 +1,12 @@
 package com.safetynet.alerts.dao;
 
-import com.safetynet.alerts.dto.DataDto;
+import com.safetynet.alerts.dto.alerts.DataDto;
 import com.safetynet.alerts.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Repository
 public class PersonDaoImpl implements PersonDao {
@@ -18,8 +18,13 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public void addPerson(Person person) {
-        this.personList.add(person);
+    public boolean addPerson(Person person) {
+        return this.personList.add(person);
+    }
+
+    @Override
+    public Optional<Person> getPersonByName(String firstName, String lastName) {
+        return this.personList.stream().filter(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)).findFirst();
     }
 
     @Override
@@ -48,11 +53,11 @@ public class PersonDaoImpl implements PersonDao {
             if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName()))
                 return person;
             return p;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     @Override
-    public void deletePerson(Person person) {
-        this.personList.remove(person);
+    public boolean deletePerson(Person person) {
+        return this.personList.remove(person);
     }
 }

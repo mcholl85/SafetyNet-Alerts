@@ -1,4 +1,4 @@
-package com.safetynet.alerts.dto;
+package com.safetynet.alerts.dto.alerts;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StationsDto {
-    private String address;
+public class StationInfoDto {
     private List<PersonDto> persons;
+    private Integer adultCount;
+    private Integer childrenCount;
 }

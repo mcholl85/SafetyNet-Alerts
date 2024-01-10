@@ -1,7 +1,7 @@
 package com.safetynet.alerts.config;
 
 import com.safetynet.alerts.constant.Data;
-import com.safetynet.alerts.dto.DataDto;
+import com.safetynet.alerts.dto.alerts.DataDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

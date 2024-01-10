@@ -2,7 +2,8 @@ package com.safetynet.alerts.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.safetynet.alerts.dto.DataDto;
+import com.safetynet.alerts.dto.alerts.DataDto;
+import com.safetynet.alerts.model.MedicalRecord;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,7 +32,9 @@ class MedicalRecordDaoTest {
 
     @Test
     void testGetMedicalRecord() {
-        assertEquals(LocalDate.of(1988, 3, 6), medicalRecordDao.getMedicalRecord("Sophia", "Zemicks").getBirthdate());
+        Optional<MedicalRecord> medicalRecordOptional = medicalRecordDao.getMedicalRecord("Sophia", "Zemicks");
+        
+        medicalRecordOptional.ifPresent(medicalRecord -> assertEquals(LocalDate.of(1988, 3, 6), medicalRecord.getBirthdate()));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.safetynet.alerts.controller;
 
-import com.safetynet.alerts.dto.*;
+import com.safetynet.alerts.dto.alerts.*;
 import com.safetynet.alerts.service.AlertsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

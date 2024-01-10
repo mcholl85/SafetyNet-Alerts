@@ -3,7 +3,7 @@ package com.safetynet.alerts.service;
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dao.PersonDao;
-import com.safetynet.alerts.dto.*;
+import com.safetynet.alerts.dto.alerts.*;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlertsServiceImpl implements AlertsService {
@@ -60,8 +61,12 @@ public class AlertsServiceImpl implements AlertsService {
 
                 personDtoList.add(personDto);
 
-                MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
-                int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+                Optional<MedicalRecord> optionalMedicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+
+                if (optionalMedicalRecord.isEmpty()) {
+                    break;
+                }
+                int age = LocalDate.now().compareTo(optionalMedicalRecord.get().getBirthdate());
 
                 if (age > 18) {
                     adultCount += 1;
@@ -86,22 +91,26 @@ public class AlertsServiceImpl implements AlertsService {
 
         this.personDao.getPersonsByAddress(address).forEach(person -> {
             PersonDto personDto = new PersonDto();
-            MedicalRecord medicalRecord = this.medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
-            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+            Optional<MedicalRecord> optionalMedicalRecord = this.medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
 
-            if (age > 18) {
-                personDto.setFirstName(person.getFirstName());
-                personDto.setLastName(person.getLastName());
-                personDto.setPhone(person.getPhone());
+            if (optionalMedicalRecord.isPresent()) {
+                int age = LocalDate.now().compareTo(optionalMedicalRecord.get().getBirthdate());
 
-                personDtoList.add(personDto);
-            } else {
-                personDto.setFirstName(person.getFirstName());
-                personDto.setLastName(person.getLastName());
-                personDto.setAge(age);
+                if (age > 18) {
+                    personDto.setFirstName(person.getFirstName());
+                    personDto.setLastName(person.getLastName());
+                    personDto.setPhone(person.getPhone());
 
-                childrenDtoList.add(personDto);
+                    personDtoList.add(personDto);
+                } else {
+                    personDto.setFirstName(person.getFirstName());
+                    personDto.setLastName(person.getLastName());
+                    personDto.setAge(age);
+
+                    childrenDtoList.add(personDto);
+                }
             }
+
         });
 
         childrenByAddressDto.setChildren(childrenDtoList);
@@ -126,15 +135,15 @@ public class AlertsServiceImpl implements AlertsService {
     @Override
     public FirePersonDto getPersonsByFireStation(String address) {
         FirePersonDto firePersonDto = new FirePersonDto();
-        Integer station = fireStationDao.getFireStationByAddress(address);
+        Optional<FireStation> fireStationOptional = fireStationDao.getFireStationByAddress(address);
 
-        if (station == 0) {
+        if (fireStationOptional.isEmpty()) {
             firePersonDto.setStation(0);
             firePersonDto.setPersons(Collections.emptyList());
             return firePersonDto;
         }
 
-        firePersonDto.setStation(station);
+        firePersonDto.setStation(fireStationOptional.get().getStation());
         firePersonDto.setPersons(this.getPersonsInfoStation(address));
 
         return firePersonDto;
@@ -148,19 +157,23 @@ public class AlertsServiceImpl implements AlertsService {
 
         personList.forEach(person -> {
             PersonDto personDto = new PersonDto();
-            MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+            Optional<MedicalRecord> optionalMedicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
 
-            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
+            if (optionalMedicalRecord.isPresent()) {
+                MedicalRecord medicalRecord = optionalMedicalRecord.get();
 
-            personDto.setFirstName(person.getFirstName());
-            personDto.setLastName(person.getLastName());
-            personDto.setAge(age);
-            personDto.setAddress(person.getAddress());
-            personDto.setEmail(person.getEmail());
-            personDto.setMedications(medicalRecord.getMedications());
-            personDto.setAllergies(medicalRecord.getAllergies());
+                int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
-            personDtoList.add(personDto);
+                personDto.setFirstName(person.getFirstName());
+                personDto.setLastName(person.getLastName());
+                personDto.setAge(age);
+                personDto.setAddress(person.getAddress());
+                personDto.setEmail(person.getEmail());
+                personDto.setMedications(medicalRecord.getMedications());
+                personDto.setAllergies(medicalRecord.getAllergies());
+
+                personDtoList.add(personDto);
+            }
         });
 
         return personDtoList;
@@ -192,17 +205,21 @@ public class AlertsServiceImpl implements AlertsService {
 
         personDao.getPersonsByAddress(address).forEach(person -> {
             PersonDto personDto = new PersonDto();
-            MedicalRecord medicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
-            int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
-            personDto.setFirstName(person.getFirstName());
-            personDto.setLastName(person.getLastName());
-            personDto.setPhone(person.getPhone());
-            personDto.setAge(age);
-            personDto.setMedications(medicalRecord.getMedications());
-            personDto.setAllergies(medicalRecord.getAllergies());
+            Optional<MedicalRecord> optionalMedicalRecord = medicalRecordDao.getMedicalRecord(person.getFirstName(), person.getLastName());
+            if (optionalMedicalRecord.isPresent()) {
+                MedicalRecord medicalRecord = optionalMedicalRecord.get();
+                int age = LocalDate.now().compareTo(medicalRecord.getBirthdate());
 
-            personDtoList.add(personDto);
+                personDto.setFirstName(person.getFirstName());
+                personDto.setLastName(person.getLastName());
+                personDto.setPhone(person.getPhone());
+                personDto.setAge(age);
+                personDto.setMedications(medicalRecord.getMedications());
+                personDto.setAllergies(medicalRecord.getAllergies());
+
+                personDtoList.add(personDto);
+            }
         });
 
         return personDtoList;
