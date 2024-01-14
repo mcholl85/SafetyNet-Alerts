@@ -1,4 +1,4 @@
 package com.safetynet.alerts.dto.firestation;
 
-public class DeleteParams extends PostParams {
+public class PutBody extends PostBody {
 }

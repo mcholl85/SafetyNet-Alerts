@@ -32,6 +32,16 @@ class PersonDaoTest {
     }
 
     @Test
+    void testGetPersonByNameIsPresent() {
+        assertTrue(personDao.getPersonByName("John", "Boyd").isPresent());
+    }
+
+    @Test
+    void testGetPersonByNameIsEmpty() {
+        assertTrue(personDao.getPersonByName("John", "Doe").isEmpty());
+    }
+
+    @Test
     void testGetAllPerson() {
         assertEquals(23, personDao.getAllPersons().size());
     }

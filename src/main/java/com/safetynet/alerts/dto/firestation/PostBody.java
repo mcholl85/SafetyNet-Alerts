@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostParams {
+public class PostBody {
     @NotNull
     @NotEmpty
     private String address;

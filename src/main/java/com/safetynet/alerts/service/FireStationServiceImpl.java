@@ -1,10 +1,10 @@
 package com.safetynet.alerts.service;
 
 import com.safetynet.alerts.dao.FireStationDao;
-import com.safetynet.alerts.dto.firestation.DeleteParams;
+import com.safetynet.alerts.dto.firestation.DeleteBody;
 import com.safetynet.alerts.dto.firestation.FireStationDto;
-import com.safetynet.alerts.dto.firestation.PostParams;
-import com.safetynet.alerts.dto.firestation.PutParams;
+import com.safetynet.alerts.dto.firestation.PostBody;
+import com.safetynet.alerts.dto.firestation.PutBody;
 import com.safetynet.alerts.model.FireStation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public boolean postFireStation(PostParams params) {
+    public boolean postFireStation(PostBody params) {
         Optional<FireStation> fireStationOptional = fireStationDao.getFireStation(params.getAddress(), params.getStation());
 
         if (fireStationOptional.isPresent()) {
@@ -35,7 +35,7 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public FireStationDto updateStationNumber(PutParams params) {
+    public FireStationDto updateStationNumber(PutBody params) {
         Optional<FireStation> optionalFireStation = fireStationDao.getFireStationByAddress(params.getAddress());
 
         if (optionalFireStation.isEmpty()) {
@@ -60,7 +60,7 @@ public class FireStationServiceImpl implements FireStationService {
         return fireStationDto;
     }
 
-    public boolean deleteFireStationMap(DeleteParams params) {
+    public boolean deleteFireStationMap(DeleteBody params) {
         Optional<FireStation> optionalFireStation = fireStationDao.getFireStation(params.getAddress(), params.getStation());
 
         if (optionalFireStation.isEmpty()) {
