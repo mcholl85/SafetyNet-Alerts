@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.safetynet.alerts.dto.alerts.DataDto;
 import com.safetynet.alerts.model.FireStation;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class FireStationDaoTest {
     FireStationDaoImpl fireStationDao;
 
-    @BeforeAll
+    @BeforeEach
     void setup() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -57,5 +57,42 @@ class FireStationDaoTest {
     @Test
     void testGetFireStationAddressesByStation() {
         assertEquals(Arrays.asList("644 Gershwin Cir", "908 73rd St", "947 E. Rose Dr"), fireStationDao.getFireStationAddressesByStation(1));
+    }
+
+    @Test
+    void testGetFireStationIsPresent() {
+        assertTrue(fireStationDao.getFireStation("947 E. Rose Dr", 1).isPresent());
+    }
+
+    @Test
+    void testGetFireStationIsEmpty() {
+        assertTrue(fireStationDao.getFireStation("947 E. Rose Dr", 10).isEmpty());
+    }
+
+    @Test
+    void testAddFireStation() {
+        FireStation fireStation = new FireStation("947 E. Rose Dr", 1);
+
+        assertTrue(fireStationDao.addFireStation(fireStation));
+        assertTrue(fireStationDao.getFireStation("947 E. Rose Dr", 1).isPresent());
+    }
+
+    @Test
+    void testUpdateFireStation() {
+        FireStation fireStation = fireStationDao.getFireStation("947 E. Rose Dr", 1).get();
+        fireStation.setStation(3);
+
+        fireStationDao.updateFireStation(fireStation);
+        FireStation updatedFireStation = fireStationDao.getFireStation("947 E. Rose Dr", 3).get();
+        assertEquals(3, updatedFireStation.getStation());
+    }
+
+
+    @Test
+    void testDeleteFireStation() {
+        FireStation fireStation = fireStationDao.getFireStation("947 E. Rose Dr", 1).get();
+
+        assertTrue(fireStationDao.deleteFireStation(fireStation));
+        assertTrue(fireStationDao.getFireStation("947 E. Rose Dr", 1).isEmpty());
     }
 }
