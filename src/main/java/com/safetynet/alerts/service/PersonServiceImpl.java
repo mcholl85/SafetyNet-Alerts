@@ -24,6 +24,8 @@ public class PersonServiceImpl implements PersonService {
         this.personDao = personDao;
     }
 
+    // TODO getALL
+
     @Override
     public boolean postPerson(PostParams params) {
         Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
