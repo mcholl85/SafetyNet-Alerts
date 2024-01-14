@@ -9,21 +9,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PutParams {
+public class PostBody {
     @NotNull
     @NotEmpty
     private String firstName;
     @NotNull
     @NotEmpty
     private String lastName;
-
+    @NotNull
+    @NotEmpty
     private String address;
-
+    @NotNull
+    @NotEmpty
     private String city;
-
+    @NotNull
+    @NotEmpty
     private String zip;
-
+    @NotNull
+    @NotEmpty
     private String phone;
-
+    @NotNull
+    @NotEmpty
     private String email;
 }

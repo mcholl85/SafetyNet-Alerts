@@ -1,9 +1,9 @@
 package com.safetynet.alerts.controller;
 
 import com.safetynet.alerts.dto.alerts.PersonDto;
-import com.safetynet.alerts.dto.person.DeleteParams;
-import com.safetynet.alerts.dto.person.PostParams;
-import com.safetynet.alerts.dto.person.PutParams;
+import com.safetynet.alerts.dto.person.DeleteBody;
+import com.safetynet.alerts.dto.person.PostBody;
+import com.safetynet.alerts.dto.person.PutBody;
 import com.safetynet.alerts.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -23,31 +23,31 @@ public class PersonController {
     }
 
     @PostMapping("/person")
-    public ResponseEntity<HttpStatus> postPerson(@Valid @RequestBody PostParams params) {
-        if (this.personService.postPerson(params)) {
+    public ResponseEntity<HttpStatus> postPerson(@Valid @RequestBody PostBody body) {
+        if (this.personService.postPerson(body)) {
             return ResponseEntity.ok(HttpStatus.CREATED);
         }
-        log.error("Creation person error : " + params.toString());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        log.error("Creation person error : " + body.toString());
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/person")
-    public ResponseEntity<PersonDto> updatePerson(@Valid @RequestBody PutParams params) {
-        PersonDto updatedPersonDto = personService.updatePerson(params);
+    public ResponseEntity<PersonDto> updatePerson(@Valid @RequestBody PutBody body) {
+        PersonDto updatedPersonDto = personService.updatePerson(body);
 
         if (updatedPersonDto == null) {
-            log.error("Update person error : " + params.toString());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            log.error("Update person error : " + body.toString());
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(updatedPersonDto);
     }
 
     @DeleteMapping("/person")
-    public ResponseEntity<HttpStatus> deletePerson(@Valid @RequestBody DeleteParams params) {
-        if (personService.deletePerson(params)) {
+    public ResponseEntity<HttpStatus> deletePerson(@Valid @RequestBody DeleteBody body) {
+        if (personService.deletePerson(body)) {
             return ResponseEntity.ok(HttpStatus.OK);
         }
-        log.error("Delete person error : " + params.toString());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        log.error("Delete person error : " + body.toString());
+        return ResponseEntity.badRequest().build();
     }
 }

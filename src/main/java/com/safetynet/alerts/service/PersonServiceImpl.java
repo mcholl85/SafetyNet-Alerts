@@ -2,9 +2,9 @@ package com.safetynet.alerts.service;
 
 import com.safetynet.alerts.dao.PersonDao;
 import com.safetynet.alerts.dto.alerts.PersonDto;
-import com.safetynet.alerts.dto.person.DeleteParams;
-import com.safetynet.alerts.dto.person.PostParams;
-import com.safetynet.alerts.dto.person.PutParams;
+import com.safetynet.alerts.dto.person.DeleteBody;
+import com.safetynet.alerts.dto.person.PostBody;
+import com.safetynet.alerts.dto.person.PutBody;
 import com.safetynet.alerts.model.Person;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +27,7 @@ public class PersonServiceImpl implements PersonService {
     // TODO getALL
 
     @Override
-    public boolean postPerson(PostParams params) {
+    public boolean postPerson(PostBody params) {
         Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
 
         if (optionalPerson.isPresent()) {
@@ -40,7 +40,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDto updatePerson(PutParams params) {
+    public PersonDto updatePerson(PutBody params) {
         Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
 
         if (optionalPerson.isEmpty()) {
@@ -71,7 +71,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean deletePerson(DeleteParams params) {
+    public boolean deletePerson(DeleteBody params) {
         Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
 
         if (optionalPerson.isEmpty()) {
@@ -84,7 +84,7 @@ public class PersonServiceImpl implements PersonService {
         return personDao.deletePerson(personToDelete);
     }
 
-    private static Person getPersonToUpdated(PutParams params, Person person) {
+    private static Person getPersonToUpdated(PutBody params, Person person) {
         if (StringUtils.isNotEmpty(params.getAddress())) {
             person.setAddress(params.getAddress());
         }
