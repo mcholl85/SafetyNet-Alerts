@@ -1,14 +1,14 @@
 package com.safetynet.alerts.service;
 
-import com.safetynet.alerts.dto.medical.DeleteParams;
+import com.safetynet.alerts.dto.medical.DeleteBody;
 import com.safetynet.alerts.dto.medical.MedicalRecordDto;
-import com.safetynet.alerts.dto.medical.PostParams;
-import com.safetynet.alerts.dto.medical.PutParams;
+import com.safetynet.alerts.dto.medical.PostBody;
+import com.safetynet.alerts.dto.medical.PutBody;
 
 public interface MedicalRecordService {
-    boolean postMedicalRecord(PostParams params);
+    boolean postMedicalRecord(PostBody body);
 
-    MedicalRecordDto updateMedicalRecord(PutParams params);
+    MedicalRecordDto updateMedicalRecord(PutBody body);
 
-    boolean deleteMedicalRecord(DeleteParams params);
+    boolean deleteMedicalRecord(DeleteBody body);
 }

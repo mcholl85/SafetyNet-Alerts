@@ -6,9 +6,9 @@ import com.safetynet.alerts.dto.firestation.PostBody;
 import com.safetynet.alerts.dto.firestation.PutBody;
 
 public interface FireStationService {
-    boolean postFireStation(PostBody params);
+    boolean postFireStation(PostBody body);
 
-    FireStationDto updateStationNumber(PutBody params);
+    FireStationDto updateStationNumber(PutBody body);
 
-    boolean deleteFireStationMap(DeleteBody params);
+    boolean deleteFireStationMap(DeleteBody body);
 }

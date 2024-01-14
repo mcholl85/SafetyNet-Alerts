@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostParams {
+public class PostBody {
     @NotNull
     @NotEmpty
     private String firstName;

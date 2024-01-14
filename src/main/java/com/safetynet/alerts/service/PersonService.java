@@ -6,9 +6,9 @@ import com.safetynet.alerts.dto.person.PostBody;
 import com.safetynet.alerts.dto.person.PutBody;
 
 public interface PersonService {
-    boolean postPerson(PostBody params);
+    boolean postPerson(PostBody body);
 
-    PersonDto updatePerson(PutBody params);
+    PersonDto updatePerson(PutBody body);
 
-    boolean deletePerson(DeleteBody params);
+    boolean deletePerson(DeleteBody body);
 }

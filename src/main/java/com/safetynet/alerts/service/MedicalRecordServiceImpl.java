@@ -1,10 +1,10 @@
 package com.safetynet.alerts.service;
 
 import com.safetynet.alerts.dao.MedicalRecordDao;
-import com.safetynet.alerts.dto.medical.DeleteParams;
+import com.safetynet.alerts.dto.medical.DeleteBody;
 import com.safetynet.alerts.dto.medical.MedicalRecordDto;
-import com.safetynet.alerts.dto.medical.PostParams;
-import com.safetynet.alerts.dto.medical.PutParams;
+import com.safetynet.alerts.dto.medical.PostBody;
+import com.safetynet.alerts.dto.medical.PutBody;
 import com.safetynet.alerts.model.MedicalRecord;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public boolean postMedicalRecord(PostParams params) {
+    public boolean postMedicalRecord(PostBody params) {
         Optional<MedicalRecord> medicalRecordOptional = medicalRecordDao.getMedicalRecord(params.getFirstName(), params.getLastName());
 
         if (medicalRecordOptional.isPresent()) {
@@ -37,7 +37,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public MedicalRecordDto updateMedicalRecord(PutParams params) {
+    public MedicalRecordDto updateMedicalRecord(PutBody params) {
         Optional<MedicalRecord> medicalRecordOptional = medicalRecordDao.getMedicalRecord(params.getFirstName(), params.getLastName());
 
         if (medicalRecordOptional.isEmpty()) {
@@ -68,7 +68,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public boolean deleteMedicalRecord(DeleteParams params) {
+    public boolean deleteMedicalRecord(DeleteBody params) {
         Optional<MedicalRecord> medicalRecordOptional = medicalRecordDao.getMedicalRecord(params.getFirstName(), params.getLastName());
 
         if (medicalRecordOptional.isEmpty()) {

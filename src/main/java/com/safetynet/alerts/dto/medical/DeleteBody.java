@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DeleteParams {
+public class DeleteBody {
     @NotNull
     @NotEmpty
     private String firstName;

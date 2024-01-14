@@ -1,4 +1,4 @@
 package com.safetynet.alerts.dto.medical;
 
-public class PutParams extends PostParams {
+public class PutBody extends PostBody {
 }
