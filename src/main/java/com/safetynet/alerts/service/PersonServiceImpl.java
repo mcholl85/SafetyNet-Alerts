@@ -27,28 +27,28 @@ public class PersonServiceImpl implements PersonService {
     // TODO getALL
 
     @Override
-    public boolean postPerson(PostBody params) {
-        Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
+    public boolean postPerson(PostBody body) {
+        Optional<Person> optionalPerson = personDao.getPersonByName(body.getFirstName(), body.getLastName());
 
         if (optionalPerson.isPresent()) {
             log.error("Creation person error : Person already created");
             return false;
         }
-        Person person = new Person(params.getFirstName(), params.getLastName(), params.getAddress(), params.getCity(), params.getZip(), params.getPhone(), params.getEmail());
+        Person person = new Person(body.getFirstName(), body.getLastName(), body.getAddress(), body.getCity(), body.getZip(), body.getPhone(), body.getEmail());
 
         return personDao.addPerson(person);
     }
 
     @Override
-    public PersonDto updatePerson(PutBody params) {
-        Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
+    public PersonDto updatePerson(PutBody body) {
+        Optional<Person> optionalPerson = personDao.getPersonByName(body.getFirstName(), body.getLastName());
 
         if (optionalPerson.isEmpty()) {
             log.error("Update person exception : person does not exist.");
             return null;
         }
 
-        Person personToUpdated = getPersonToUpdated(params, optionalPerson.get());
+        Person personToUpdated = getPersonToUpdated(body, optionalPerson.get());
 
         try {
             personDao.updatePerson(personToUpdated);
@@ -71,8 +71,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean deletePerson(DeleteBody params) {
-        Optional<Person> optionalPerson = personDao.getPersonByName(params.getFirstName(), params.getLastName());
+    public boolean deletePerson(DeleteBody body) {
+        Optional<Person> optionalPerson = personDao.getPersonByName(body.getFirstName(), body.getLastName());
 
         if (optionalPerson.isEmpty()) {
             log.error("Delete person exception : person does not exist.");
@@ -84,21 +84,21 @@ public class PersonServiceImpl implements PersonService {
         return personDao.deletePerson(personToDelete);
     }
 
-    private static Person getPersonToUpdated(PutBody params, Person person) {
-        if (StringUtils.isNotEmpty(params.getAddress())) {
-            person.setAddress(params.getAddress());
+    private static Person getPersonToUpdated(PutBody body, Person person) {
+        if (StringUtils.isNotEmpty(body.getAddress())) {
+            person.setAddress(body.getAddress());
         }
-        if (StringUtils.isNotEmpty(params.getCity())) {
-            person.setCity(params.getCity());
+        if (StringUtils.isNotEmpty(body.getCity())) {
+            person.setCity(body.getCity());
         }
-        if (StringUtils.isNotEmpty(params.getZip())) {
-            person.setZip(params.getZip());
+        if (StringUtils.isNotEmpty(body.getZip())) {
+            person.setZip(body.getZip());
         }
-        if (StringUtils.isNotEmpty(params.getPhone())) {
-            person.setPhone(params.getPhone());
+        if (StringUtils.isNotEmpty(body.getPhone())) {
+            person.setPhone(body.getPhone());
         }
-        if (StringUtils.isNotEmpty(params.getEmail())) {
-            person.setEmail(params.getEmail());
+        if (StringUtils.isNotEmpty(body.getEmail())) {
+            person.setEmail(body.getEmail());
 
         }
         return person;
