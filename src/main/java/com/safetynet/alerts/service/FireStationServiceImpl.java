@@ -23,20 +23,20 @@ public class FireStationServiceImpl implements FireStationService {
     }
 
     @Override
-    public boolean postFireStation(PostBody params) {
-        Optional<FireStation> fireStationOptional = fireStationDao.getFireStation(params.getAddress(), params.getStation());
+    public boolean postFireStation(PostBody body) {
+        Optional<FireStation> fireStationOptional = fireStationDao.getFireStation(body.getAddress(), body.getStation());
 
         if (fireStationOptional.isPresent()) {
             log.error("Creation FireStation error : FireStationMap already exists");
             return false;
         }
 
-        return fireStationDao.addFireStation(new FireStation(params.getAddress(), params.getStation()));
+        return fireStationDao.addFireStation(new FireStation(body.getAddress(), body.getStation()));
     }
 
     @Override
-    public FireStationDto updateStationNumber(PutBody params) {
-        Optional<FireStation> optionalFireStation = fireStationDao.getFireStationByAddress(params.getAddress());
+    public FireStationDto updateStationNumber(PutBody body) {
+        Optional<FireStation> optionalFireStation = fireStationDao.getFireStationByAddress(body.getAddress());
 
         if (optionalFireStation.isEmpty()) {
             log.error("Update FireStation error : FireStationMap does not exist");
@@ -44,7 +44,7 @@ public class FireStationServiceImpl implements FireStationService {
         }
 
         FireStation updatedFireStation = optionalFireStation.get();
-        updatedFireStation.setStation(params.getStation());
+        updatedFireStation.setStation(body.getStation());
 
         try {
             fireStationDao.updateFireStation(updatedFireStation);
@@ -60,8 +60,8 @@ public class FireStationServiceImpl implements FireStationService {
         return fireStationDto;
     }
 
-    public boolean deleteFireStationMap(DeleteBody params) {
-        Optional<FireStation> optionalFireStation = fireStationDao.getFireStation(params.getAddress(), params.getStation());
+    public boolean deleteFireStationMap(DeleteBody body) {
+        Optional<FireStation> optionalFireStation = fireStationDao.getFireStation(body.getAddress(), body.getStation());
 
         if (optionalFireStation.isEmpty()) {
             log.error("Delete FireStation error : FireStationMap does not exist");
