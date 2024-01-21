@@ -1,4 +1,4 @@
-package com.safetynet.alerts.service;
+package com.safetynet.alerts.service.impl;
 
 import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dto.firestation.DeleteBody;
@@ -6,6 +6,7 @@ import com.safetynet.alerts.dto.firestation.FireStationDto;
 import com.safetynet.alerts.dto.firestation.PostBody;
 import com.safetynet.alerts.dto.firestation.PutBody;
 import com.safetynet.alerts.model.FireStation;
+import com.safetynet.alerts.service.FireStationService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

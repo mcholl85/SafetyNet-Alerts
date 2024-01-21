@@ -2,6 +2,7 @@ package com.safetynet.alerts.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.safetynet.alerts.dao.impl.PersonDaoImpl;
 import com.safetynet.alerts.dto.alerts.DataDto;
 import com.safetynet.alerts.model.Person;
 import org.junit.jupiter.api.BeforeEach;

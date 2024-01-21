@@ -1,5 +1,6 @@
-package com.safetynet.alerts.dao;
+package com.safetynet.alerts.dao.impl;
 
+import com.safetynet.alerts.dao.FireStationDao;
 import com.safetynet.alerts.dto.alerts.DataDto;
 import com.safetynet.alerts.model.FireStation;
 import org.springframework.beans.factory.annotation.Autowired;

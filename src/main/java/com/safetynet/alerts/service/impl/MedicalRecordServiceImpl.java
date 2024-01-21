@@ -1,4 +1,4 @@
-package com.safetynet.alerts.service;
+package com.safetynet.alerts.service.impl;
 
 import com.safetynet.alerts.dao.MedicalRecordDao;
 import com.safetynet.alerts.dto.medical.DeleteBody;
@@ -6,6 +6,7 @@ import com.safetynet.alerts.dto.medical.MedicalRecordDto;
 import com.safetynet.alerts.dto.medical.PostBody;
 import com.safetynet.alerts.dto.medical.PutBody;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.service.MedicalRecordService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

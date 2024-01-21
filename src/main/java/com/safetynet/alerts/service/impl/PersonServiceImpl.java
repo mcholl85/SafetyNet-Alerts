@@ -1,4 +1,4 @@
-package com.safetynet.alerts.service;
+package com.safetynet.alerts.service.impl;
 
 import com.safetynet.alerts.dao.PersonDao;
 import com.safetynet.alerts.dto.alerts.PersonDto;
@@ -6,6 +6,7 @@ import com.safetynet.alerts.dto.person.DeleteBody;
 import com.safetynet.alerts.dto.person.PostBody;
 import com.safetynet.alerts.dto.person.PutBody;
 import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.service.PersonService;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

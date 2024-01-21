@@ -5,6 +5,7 @@ import com.safetynet.alerts.dto.medical.DeleteBody;
 import com.safetynet.alerts.dto.medical.PostBody;
 import com.safetynet.alerts.dto.medical.PutBody;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.service.impl.MedicalRecordServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

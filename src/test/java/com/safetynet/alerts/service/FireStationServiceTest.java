@@ -5,6 +5,7 @@ import com.safetynet.alerts.dto.firestation.DeleteBody;
 import com.safetynet.alerts.dto.firestation.PostBody;
 import com.safetynet.alerts.dto.firestation.PutBody;
 import com.safetynet.alerts.model.FireStation;
+import com.safetynet.alerts.service.impl.FireStationServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
