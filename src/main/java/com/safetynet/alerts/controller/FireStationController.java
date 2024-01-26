@@ -5,13 +5,11 @@ import com.safetynet.alerts.dto.firestation.FireStationDto;
 import com.safetynet.alerts.dto.firestation.PostBody;
 import com.safetynet.alerts.dto.firestation.PutBody;
 import com.safetynet.alerts.service.FireStationService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Log4j2
 @RestController
 public class FireStationController {
     private final FireStationService fireStationService;
@@ -26,7 +24,6 @@ public class FireStationController {
         if (fireStationService.postFireStation(body)) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
-        log.error("Creation FireStation error : " + body.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
@@ -35,7 +32,6 @@ public class FireStationController {
         FireStationDto fireStationDto = fireStationService.updateStationNumber(body);
 
         if (fireStationDto == null) {
-            log.error("Update FireStation error : " + body.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -48,7 +44,6 @@ public class FireStationController {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
 
-        log.error("Delete FireStation error: " + body.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 

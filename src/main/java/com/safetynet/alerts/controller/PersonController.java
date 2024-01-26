@@ -6,13 +6,12 @@ import com.safetynet.alerts.dto.person.PostBody;
 import com.safetynet.alerts.dto.person.PutBody;
 import com.safetynet.alerts.service.PersonService;
 import jakarta.validation.Valid;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Log4j2
+
 @RestController
 public class PersonController {
     private final PersonService personService;
@@ -27,7 +26,7 @@ public class PersonController {
         if (this.personService.postPerson(body)) {
             return ResponseEntity.ok(HttpStatus.CREATED);
         }
-        log.error("Creation person error : " + body.toString());
+
         return ResponseEntity.badRequest().build();
     }
 
@@ -36,7 +35,6 @@ public class PersonController {
         PersonDto updatedPersonDto = personService.updatePerson(body);
 
         if (updatedPersonDto == null) {
-            log.error("Update person error : " + body.toString());
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(updatedPersonDto);
@@ -47,7 +45,7 @@ public class PersonController {
         if (personService.deletePerson(body)) {
             return ResponseEntity.ok(HttpStatus.OK);
         }
-        log.error("Delete person error : " + body.toString());
+
         return ResponseEntity.badRequest().build();
     }
 }
